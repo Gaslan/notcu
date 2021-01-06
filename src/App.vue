@@ -1,28 +1,49 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="todo-app">
+      <Sidebar />
+      <Middlebar />
+      <Content />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Sidebar from './components/Sidebar';
+import Middlebar from './components/Middlebar';
+import Content from './components/Content';
+import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Sidebar,
+    Middlebar,
+    Content
+  },
+  created() {
+    console.log('created içi')
+    this.getAllNotes()
+  },
+  methods: {
+    ...mapActions(['getAllNotes'])
   }
 }
 </script>
 
 <style>
+@import './assets/css/all.min.css';
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+.todo-app{
+  width: 100%;
+  height: 100vh;
 }
 </style>
