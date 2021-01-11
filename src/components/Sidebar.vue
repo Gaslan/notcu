@@ -5,12 +5,16 @@
         <li>
           <a href="#">
             <span class="icon-container"><i class="fas fa-file"></i></span>
-            <span>All Notes</span></a>
+            <span class="title">All Notes</span>
+            <span class="count">{{this.notesCount}}</span>
+          </a>
         </li>
-        <li>
+        <li v-if="this.hasFavorited">
           <a href="#">
             <span class="icon-container"><i class="fas fa-star"></i></span>
-            <span>Favorites</span></a>
+            <span class="title">Favorites</span>
+            <span class="count">{{this.favoritedCount}}</span>
+          </a>
         </li>
       </ul>
     </div>
@@ -28,7 +32,21 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
+  name: 'Sidebar',
+  computed: {
+    ...mapState(['notes']),
+    hasFavorited() {
+      return this.notes.some(x => x.favorited)
+    },
+    favoritedCount() {
+      return this.notes.filter(x => x.favorited).length
+    },
+    notesCount() {
+      return this.notes.length
+    }
+  }
 
 }
 </script>
@@ -81,6 +99,19 @@ export default {
   max-width: 16px;
   min-width: 16px;
   margin-right: 8px;
+}
+
+.sidebar-main ul a .title{
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.sidebar-main ul a .count{
+  font-size: .75rem;
+  margin-left: .25rem;
 }
 
 .sidebar-main ul a:hover .icon-container{

@@ -5,14 +5,18 @@
             "content": "Bişeyler bişeyler",
             "createdAt": "2021-01-5T21:23:22",
             "favorited": false,
-            "pinned": false
+            "pinned": false,
+            "tags": [
+                "yeni tag"
+            ]
         },
         {
             "title": "Untitled1",
             "content": "Bişeyler bişeyler var belki",
             "createdAt": "2021-01-03T21:23:22",
             "favorited": true,
-            "pinned": false
+            "pinned": false,
+            "tags": []
         },
         {
             "title": "Untitled2",
