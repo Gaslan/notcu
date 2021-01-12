@@ -21,9 +21,7 @@ const store = new Vuex.Store({
       await fetch('http://localhost:3000/todos')
         .then(response => response.json())
         .then(data => {
-          console.log('vuex mutation içi', data)
           commit('setNotes', data)
-          // state.notes = data
         });
     },
     selectNote({commit}, note) {

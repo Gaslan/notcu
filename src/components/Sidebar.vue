@@ -47,7 +47,6 @@ export default {
       return this.notes.length
     }
   }
-
 }
 </script>
 

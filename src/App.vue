@@ -22,7 +22,6 @@ export default {
     Content
   },
   created() {
-    console.log('created içi')
     this.getAllNotes()
   },
   methods: {
