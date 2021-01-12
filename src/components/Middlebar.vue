@@ -43,7 +43,6 @@ export default {
   computed: {
     ...mapState(['notes'])
   }
-
 }
 </script>
 
@@ -137,19 +136,5 @@ export default {
 
 .middlebar-list{
   flex-grow: 1;
-}
-
-.middlebar-list-item{
-  width: 100%;
-  line-height: 18px;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  cursor: pointer;
-}
-
-.middlebar-list-item:hover{
-  background: var(--background-secondary);
 }
 </style>

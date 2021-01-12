@@ -1,5 +1,5 @@
 <template>
-  <div class="middlebar-list-item" @click="handleClick">
+  <div class="middlebar-list-item" :class="isSelected(note) ? 'selected' : ''" @click="handleClick">
     <span class="title">{{note.title}}</span>
     <span v-if="note.favorited" class="icon-container favorited">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   name: 'NoteListItem',
@@ -21,15 +21,38 @@ export default {
     ...mapActions(['selectNote']),
     handleClick() {
       this.selectNote(this.note)
+    },
+    isSelected(note) {
+      if (!this.selectedNote) {
+        return false;
+      }
+
+      return this.selectedNote.id === note.id
     }
+  },
+  computed: {
+    ...mapState(['selectedNote'])
   }
 }
 </script>
 
 <style>
   .middlebar-list-item{
+    width: 100%;
+    line-height: 18px;
+    font-size: 14px;
     display: flex;
     align-items: center;
+    padding: 8px;
+    cursor: pointer;
+  }
+
+  .middlebar-list-item:hover{
+    background: var(--background-secondary);
+  }
+
+  .middlebar-list-item.selected{
+    background: var(--background-primary);
   }
 
   .middlebar-list-item .title{
