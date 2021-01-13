@@ -3,17 +3,31 @@
     <div class="sidebar-main">
       <ul>
         <li>
-          <a href="#">
+          <a href="#" @click="handleClick('all')">
             <span class="icon-container"><i class="fas fa-file"></i></span>
             <span class="title">All Notes</span>
-            <span class="count">{{this.notesCount}}</span>
+            <span class="count">{{this.allNotesCount}}</span>
           </a>
         </li>
         <li v-if="this.hasFavorited">
-          <a href="#">
+          <a href="#" @click="handleClick('favorite')">
             <span class="icon-container"><i class="fas fa-star"></i></span>
             <span class="title">Favorites</span>
             <span class="count">{{this.favoritedCount}}</span>
+          </a>
+        </li>
+        <li v-if="this.hasTagged">
+          <a href="#" @click="handleClick('tag', 'all')">
+            <span class="icon-container"><i class="fas fa-tag"></i></span>
+            <span class="title">Tags</span>
+            <span class="count">{{this.taggedCount}}</span>
+          </a>
+        </li>
+        <li v-for="tag in this.getTagList()" :key="tag">
+          <a href="#" @click="handleClick('tag', tag)">
+            <span class="icon-container"></span>
+            <span class="title">{{tag}}</span>
+            <span class="count">{{countNotesWithTag(tag)}}</span>
           </a>
         </li>
       </ul>
@@ -32,7 +46,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 export default {
   name: 'Sidebar',
   computed: {
@@ -40,11 +54,50 @@ export default {
     hasFavorited() {
       return this.notes.some(x => x.favorited)
     },
+    hasTagged() {
+      return this.notes.some(x => x.tags && x.tags.length)
+    },
     favoritedCount() {
       return this.notes.filter(x => x.favorited).length
     },
-    notesCount() {
+    taggedCount() {
+      return this.notes.filter(x => x.tags && x.tags.length).length
+    },
+    allNotesCount() {
       return this.notes.length
+    }
+  },
+  methods: {
+    ...mapActions(['displayNoteType']),
+    handleClick(type, payload) {
+      const noteType = {
+        type: type
+      }
+      if (type == 'tag') {
+        noteType.payload = payload
+      }
+      this.displayNoteType(noteType)
+      return false;
+    },
+    getTagList() {
+      const tagSet = new Set()
+      this.notes.forEach(x => {
+        if (x.tags) {
+          x.tags.forEach(y => tagSet.add(y))
+        }
+      })
+      return [...tagSet]
+    },
+    countNotesWithTag(tag) {
+      return this.notes.reduce((acc, val) => {
+        if (!val.tags) {
+          return acc
+        }
+        if (!val.tags.includes(tag)) {
+          return acc
+        }
+        return acc + 1
+      }, 0)
     }
   }
 }

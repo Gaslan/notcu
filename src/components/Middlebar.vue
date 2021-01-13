@@ -17,31 +17,22 @@
         <i class="fas fa-angle-down"></i>
       </div>
     </div>
-    <div class="middlebar-list">
-      <NoteListItem
-        v-for="note in notes"
-        :note="note"
-        :key="note.title" />
-    </div>
+    <NoteList />
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import NoteListItem from "./NoteListItem";
+import NoteList from "./NoteList";
 
 export default {
   name: 'Middlebar',
   components: {
-    NoteListItem
+    NoteList
   },
   data() {
     return {
 
     }
-  },
-  computed: {
-    ...mapState(['notes'])
   }
 }
 </script>
@@ -132,9 +123,5 @@ export default {
 .middlebar-title .sort-panel{
   padding: 4px 8px;
   cursor: pointer;
-}
-
-.middlebar-list{
-  flex-grow: 1;
 }
 </style>

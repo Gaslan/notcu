@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: () => ({
     notes: [],
-    selectedNote: {}
+    selectedNote: {},
+    displayedNoteType: {}
   }),
   mutations: {
     setNotes (state, notes) {
@@ -14,6 +15,9 @@ const store = new Vuex.Store({
     },
     setSelectedNote(state, note) {
       state.selectedNote = note
+    },
+    setDisplayedNoteType(state, type) {
+      state.displayedNoteType = type
     }
   },
   actions: {
@@ -26,6 +30,9 @@ const store = new Vuex.Store({
     },
     selectNote({commit}, note) {
       commit('setSelectedNote', note)
+    },
+    displayNoteType({commit}, type) {
+      commit('setDisplayedNoteType', type)
     }
   }
 })
