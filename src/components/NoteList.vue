@@ -17,7 +17,7 @@ export default {
     NoteListItem
   },
   computed: {
-    ...mapState(['notes', 'displayedNoteType']),
+    ...mapState(['notes', 'displayedNoteType', 'displayedNoteSortType']),
     displayedNotes() {
       const noteType = this.displayedNoteType
       if (!noteType || !noteType.type) {
@@ -43,7 +43,11 @@ export default {
       return []
     },
     sortedDisplayedNotes() {
-      this.sortNotes(this.displayedNotes)
+      if (this.displayedNoteSortType.type == 'asc') {
+        this.sortNotes(this.displayedNotes)
+      } else {
+        this.sortNotesReverse(this.displayedNotes)
+      }
       return this.displayedNotes
     }
   },
@@ -61,6 +65,23 @@ export default {
             return 1
           } else {
             return a.title.localeCompare(b.title)
+          }
+        }
+      })
+    },
+    sortNotesReverse(notes) {
+      notes.sort((a, b) => {
+        if (a.pinned) {
+          if (b.pinned) {
+            return b.title.localeCompare(a.title)
+          } else {
+            return -1
+          }
+        } else {
+          if (b.pinned) {
+            return 1
+          } else {
+            return b.title.localeCompare(a.title)
           }
         }
       })

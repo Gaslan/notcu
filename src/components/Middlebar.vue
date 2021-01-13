@@ -13,8 +13,9 @@
       <div class="title-panel">
         Title
       </div>
-      <div class="sort-panel">
-        <i class="fas fa-angle-down"></i>
+      <div class="sort-panel" @click="this.handleClickSort">
+        <i v-if="this.sortType.type == 'desc'" class="fas fa-angle-down" title="Descending"></i>
+        <i v-if="this.sortType.type == 'asc'" class="fas fa-angle-up" title="Ascending"></i>
       </div>
     </div>
     <NoteList />
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import NoteList from "./NoteList";
 
 export default {
@@ -31,7 +33,24 @@ export default {
   },
   data() {
     return {
-
+      sortType: {
+        type: 'asc'
+      }
+    }
+  },
+  computed: {
+    ...mapState(['displayedNoteSortType'])
+  },
+  methods: {
+    ...mapActions(['changeDisplayedNoteSortType']),
+    handleClickSort() {
+      if (this.displayedNoteSortType.type == 'asc') {
+        this.sortType.type = 'desc'
+        this.changeDisplayedNoteSortType('desc')
+      } else {
+        this.sortType.type = 'asc'
+        this.changeDisplayedNoteSortType('asc')
+      }
     }
   }
 }

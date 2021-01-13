@@ -7,7 +7,10 @@ const store = new Vuex.Store({
   state: () => ({
     notes: [],
     selectedNote: {},
-    displayedNoteType: {}
+    displayedNoteType: {},
+    displayedNoteSortType: {
+      type: 'asc'
+    }
   }),
   mutations: {
     setNotes (state, notes) {
@@ -18,6 +21,9 @@ const store = new Vuex.Store({
     },
     setDisplayedNoteType(state, type) {
       state.displayedNoteType = type
+    },
+    setDisplayedNoteSortType(state, type) {
+      state.displayedNoteSortType.type = type
     }
   },
   actions: {
@@ -33,6 +39,9 @@ const store = new Vuex.Store({
     },
     displayNoteType({commit}, type) {
       commit('setDisplayedNoteType', type)
+    },
+    changeDisplayedNoteSortType({commit}, type) {
+      commit('setDisplayedNoteSortType', type)
     }
   }
 })
