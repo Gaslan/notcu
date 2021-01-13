@@ -30,6 +30,13 @@
             <span class="count">{{countNotesWithTag(tag)}}</span>
           </a>
         </li>
+        <li v-if="this.hasDeleted">
+          <a href="#" @click="handleClick('trash')">
+            <span class="icon-container"><i class="fas fa-trash"></i></span>
+            <span class="title">Trash</span>
+            <span class="count">{{this.deletedCount}}</span>
+          </a>
+        </li>
       </ul>
     </div>
     <div class="sidebar-collapse">
@@ -52,19 +59,25 @@ export default {
   computed: {
     ...mapState(['notes']),
     hasFavorited() {
-      return this.notes.some(x => x.favorited)
+      return this.notes.some(x => x.favorited && !x.deleted)
     },
     hasTagged() {
-      return this.notes.some(x => x.tags && x.tags.length)
+      return this.notes.some(x => x.tags && x.tags.length && !x.deleted)
+    },
+    hasDeleted() {
+      return this.notes.some(x => x.deleted)
     },
     favoritedCount() {
-      return this.notes.filter(x => x.favorited).length
+      return this.notes.filter(x => x.favorited && !x.deleted).length
     },
     taggedCount() {
-      return this.notes.filter(x => x.tags && x.tags.length).length
+      return this.notes.filter(x => x.tags && x.tags.length && !x.deleted).length
+    },
+    deletedCount() {
+      return this.notes.filter(x => x.deleted).length
     },
     allNotesCount() {
-      return this.notes.length
+      return this.notes.filter(x => !x.deleted).length
     }
   },
   methods: {
@@ -82,6 +95,9 @@ export default {
     getTagList() {
       const tagSet = new Set()
       this.notes.forEach(x => {
+        if (x.deleted) {
+          return
+        }
         if (x.tags) {
           x.tags.forEach(y => tagSet.add(y))
         }

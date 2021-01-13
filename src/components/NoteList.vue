@@ -25,18 +25,22 @@ export default {
       }
 
       if (noteType.type == 'all') {
-        return this.notes
+        return this.notes.filter(x => !x.deleted)
       }
 
       if (noteType.type == 'favorite') {
-        return this.notes.filter(x => x.favorited)
+        return this.notes.filter(x => x.favorited && !x.deleted)
+      }
+
+      if (noteType.type == 'trash') {
+        return this.notes.filter(x => x.deleted)
       }
 
       if (noteType.type == 'tag') {
         if (noteType.payload == 'all') {
-          return this.notes.filter(x => x.tags && x.tags.length)
+          return this.notes.filter(x => x.tags && x.tags.length && !x.deleted)
         } else {
-          return this.notes.filter(x => x.tags && x.tags.includes(noteType.payload))
+          return this.notes.filter(x => x.tags && x.tags.includes(noteType.payload) && !x.deleted)
         }
       }
 
