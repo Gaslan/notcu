@@ -59,6 +59,9 @@ export default {
   components: {
     SidebarMenuItem
   },
+  mounted() {
+    this.$el.querySelector('.sidebar-main ul li:first-child a').dispatchEvent(new Event('click'))
+  },
   computed: {
     ...mapState(['notes', 'displayedNoteType']),
     hasFavorited() {

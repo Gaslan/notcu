@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <ContentHeader />
-    <div v-if="this.selectedNote.title">
+    <div v-if="this.selectedNote && this.selectedNote.title">
       {{this.selectedNote}}
     </div>
   </div>

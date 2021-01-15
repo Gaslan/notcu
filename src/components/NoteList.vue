@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import NoteListItem from "./NoteListItem";
 
 export default {
@@ -17,7 +17,7 @@ export default {
     NoteListItem
   },
   computed: {
-    ...mapState(['notes', 'displayedNoteType', 'displayedNoteSortType']),
+    ...mapState(['notes', 'selectedNote', 'displayedNoteType', 'displayedNoteSortType']),
     displayedNotes() {
       const noteType = this.displayedNoteType
       if (!noteType || !noteType.type) {
@@ -47,15 +47,26 @@ export default {
       return []
     },
     sortedDisplayedNotes() {
+      if (!this.displayedNotes || this.displayedNotes.length == 0) {
+        return []
+      }
+
       if (this.displayedNoteSortType.type == 'asc') {
         this.sortNotes(this.displayedNotes)
       } else {
         this.sortNotesReverse(this.displayedNotes)
       }
+
+      if (!this.displayedNotes.includes(this.selectedNote)) {
+        const first = this.displayedNotes[0]
+        this.selectNote(first)
+      }
+
       return this.displayedNotes
     }
   },
   methods: {
+    ...mapActions(['selectNote']),
     sortNotes(notes) {
       notes.sort((a, b) => {
         if (a.pinned) {
