@@ -3,39 +3,38 @@
     <div class="sidebar-main">
       <ul>
         <li>
-          <a href="#" @click="handleClick('all')" :class="isNoteTypeSelected('all')">
-            <span class="icon-container"><i class="fas fa-file"></i></span>
-            <span class="title">All Notes</span>
-            <span class="count">{{this.allNotesCount}}</span>
-          </a>
+          <SidebarMenuItem
+            v-bind:type="['all']"
+            :icon="'file'"
+            :title="'All Notes'"
+            :count="this.allNotesCount" />
         </li>
         <li v-if="this.hasFavorited">
-          <a href="#" @click="handleClick('favorite')" :class="isNoteTypeSelected('favorite')">
-            <span class="icon-container"><i class="fas fa-star"></i></span>
-            <span class="title">Favorites</span>
-            <span class="count">{{this.favoritedCount}}</span>
-          </a>
+          <SidebarMenuItem
+            v-bind:type="['favorite']"
+            :icon="'star'"
+            :title="'Favorites'"
+            :count="this.favoritedCount" />
         </li>
         <li v-if="this.hasTagged">
-          <a href="#" @click="handleClick('tag', 'all')" :class="isNoteTypeSelected('tag', 'all')">
-            <span class="icon-container"><i class="fas fa-tag"></i></span>
-            <span class="title">Tags</span>
-            <span class="count">{{this.taggedCount}}</span>
-          </a>
+          <SidebarMenuItem
+            v-bind:type="['tag', 'all']"
+            :icon="'tag'"
+            :title="'Tags'"
+            :count="this.taggedCount" />
         </li>
         <li v-for="tag in this.getTagList()" :key="tag">
-          <a href="#" @click="handleClick('tag', tag)" :class="isNoteTypeSelected('tag', tag)">
-            <span class="icon-container"></span>
-            <span class="title">{{tag}}</span>
-            <span class="count">{{countNotesWithTag(tag)}}</span>
-          </a>
+          <SidebarMenuItem
+            v-bind:type="['tag', tag]"
+            :title="tag"
+            :count="countNotesWithTag(tag)" />
         </li>
         <li v-if="this.hasDeleted">
-          <a href="#" @click="handleClick('trash')" :class="isNoteTypeSelected('trash')">
-            <span class="icon-container"><i class="fas fa-trash"></i></span>
-            <span class="title">Trash</span>
-            <span class="count">{{this.deletedCount}}</span>
-          </a>
+          <SidebarMenuItem
+            v-bind:type="['trash']"
+            :icon="'trash'"
+            :title="'Trash'"
+            :count="this.deletedCount" />
         </li>
       </ul>
     </div>
@@ -53,9 +52,13 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
+import SidebarMenuItem from "./SidebarMenuItem";
 export default {
   name: 'Sidebar',
+  components: {
+    SidebarMenuItem
+  },
   computed: {
     ...mapState(['notes', 'displayedNoteType']),
     hasFavorited() {
@@ -81,17 +84,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['displayNoteType']),
-    handleClick(type, payload) {
-      const noteType = {
-        type: type
-      }
-      if (type == 'tag') {
-        noteType.payload = payload
-      }
-      this.displayNoteType(noteType)
-      return false;
-    },
     getTagList() {
       const tagSet = new Set()
       this.notes.forEach(x => {
@@ -114,17 +106,6 @@ export default {
         }
         return acc + 1
       }, 0)
-    },
-    isNoteTypeSelected(type, payload) {
-      if (type == this.displayedNoteType.type) {
-        if (type == 'tag') {
-          if (payload != this.displayedNoteType.payload) {
-            return ''
-          }
-        }
-        return 'active'
-      }
-      return ''
     }
   }
 }
