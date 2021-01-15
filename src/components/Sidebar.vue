@@ -3,35 +3,35 @@
     <div class="sidebar-main">
       <ul>
         <li>
-          <a href="#" @click="handleClick('all')">
+          <a href="#" @click="handleClick('all')" :class="isNoteTypeSelected('all')">
             <span class="icon-container"><i class="fas fa-file"></i></span>
             <span class="title">All Notes</span>
             <span class="count">{{this.allNotesCount}}</span>
           </a>
         </li>
         <li v-if="this.hasFavorited">
-          <a href="#" @click="handleClick('favorite')">
+          <a href="#" @click="handleClick('favorite')" :class="isNoteTypeSelected('favorite')">
             <span class="icon-container"><i class="fas fa-star"></i></span>
             <span class="title">Favorites</span>
             <span class="count">{{this.favoritedCount}}</span>
           </a>
         </li>
         <li v-if="this.hasTagged">
-          <a href="#" @click="handleClick('tag', 'all')">
+          <a href="#" @click="handleClick('tag', 'all')" :class="isNoteTypeSelected('tag', 'all')">
             <span class="icon-container"><i class="fas fa-tag"></i></span>
             <span class="title">Tags</span>
             <span class="count">{{this.taggedCount}}</span>
           </a>
         </li>
         <li v-for="tag in this.getTagList()" :key="tag">
-          <a href="#" @click="handleClick('tag', tag)">
+          <a href="#" @click="handleClick('tag', tag)" :class="isNoteTypeSelected('tag', tag)">
             <span class="icon-container"></span>
             <span class="title">{{tag}}</span>
             <span class="count">{{countNotesWithTag(tag)}}</span>
           </a>
         </li>
         <li v-if="this.hasDeleted">
-          <a href="#" @click="handleClick('trash')">
+          <a href="#" @click="handleClick('trash')" :class="isNoteTypeSelected('trash')">
             <span class="icon-container"><i class="fas fa-trash"></i></span>
             <span class="title">Trash</span>
             <span class="count">{{this.deletedCount}}</span>
@@ -57,7 +57,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: 'Sidebar',
   computed: {
-    ...mapState(['notes']),
+    ...mapState(['notes', 'displayedNoteType']),
     hasFavorited() {
       return this.notes.some(x => x.favorited && !x.deleted)
     },
@@ -114,6 +114,17 @@ export default {
         }
         return acc + 1
       }, 0)
+    },
+    isNoteTypeSelected(type, payload) {
+      if (type == this.displayedNoteType.type) {
+        if (type == 'tag') {
+          if (payload != this.displayedNoteType.payload) {
+            return ''
+          }
+        }
+        return 'active'
+      }
+      return ''
     }
   }
 }
@@ -158,7 +169,11 @@ export default {
 }
 
 .sidebar-main ul a:hover{
-  background: rgba(255, 255, 255, .08);
+  background: rgba(255, 255, 255, .06);
+}
+
+.sidebar-main ul a.active{
+  background: rgba(255, 255, 255, .09);
 }
 
 .sidebar-main ul a .icon-container{
