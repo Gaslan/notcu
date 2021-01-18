@@ -9,10 +9,11 @@
 </template>
 
 <script>
-import Sidebar from './components/Sidebar';
-import Middlebar from './components/Middlebar';
-import Content from './components/Content';
+import Sidebar from './components/Sidebar'
+import Middlebar from './components/Middlebar'
+import Content from './components/Content'
 import { mapActions } from 'vuex'
+import Popover from 'bootstrap/js/dist/popover';
 
 export default {
   name: 'App',
@@ -20,6 +21,11 @@ export default {
     Sidebar,
     Middlebar,
     Content
+  },
+  mounted() {
+    new Popover(document.querySelector('.btn-action-tag'), {
+      container: 'body'
+    })
   },
   created() {
     this.getAllNotes()
