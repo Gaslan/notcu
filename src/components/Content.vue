@@ -1,20 +1,23 @@
 <template>
   <div class="content">
     <ContentHeader />
-    <div v-if="this.selectedNote && this.selectedNote.title">
+    <!-- <div v-if="this.selectedNote && this.selectedNote.title">
       {{this.selectedNote}}
-    </div>
+    </div> -->
+    <ContentEditor :content="this.selectedNote.content" />
   </div>
 </template>
 
 <script>
 import ContentHeader from "./ContentHeader";
+import ContentEditor from "./ContentEditor";
 import { mapState } from "vuex";
 
 export default {
   name: 'Content',
   components: {
-    ContentHeader
+    ContentHeader,
+    ContentEditor
   },
   computed: {
     ...mapState(['selectedNote'])
@@ -30,5 +33,7 @@ export default {
     top: 0;
     bottom: 0;
     right: 0;
+    display: flex;
+    flex-direction: column;
   }
 </style>

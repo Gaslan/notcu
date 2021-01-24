@@ -10,7 +10,8 @@ const store = new Vuex.Store({
     displayedNoteType: {},
     displayedNoteSortType: {
       type: 'asc'
-    }
+    },
+    isContentEditorPreviewMode: true
   }),
   mutations: {
     setNotes (state, notes) {
@@ -24,6 +25,9 @@ const store = new Vuex.Store({
     },
     setDisplayedNoteSortType(state, type) {
       state.displayedNoteSortType.type = type
+    },
+    toggleContentEditorPreviewMode(state) {
+      state.isContentEditorPreviewMode = !state.isContentEditorPreviewMode
     }
   },
   actions: {
@@ -42,6 +46,9 @@ const store = new Vuex.Store({
     },
     changeDisplayedNoteSortType({commit}, type) {
       commit('setDisplayedNoteSortType', type)
+    },
+    toggleContentEditorPreviewMode({commit}) {
+      commit('toggleContentEditorPreviewMode')
     }
   }
 })
