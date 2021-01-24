@@ -28,7 +28,7 @@ const store = new Vuex.Store({
   },
   actions: {
     async getAllNotes({ commit }) {
-      await fetch('http://localhost:3000/todos')
+      await fetch('http://192.168.0.21:3000/todos')
         .then(response => response.json())
         .then(data => {
           commit('setNotes', data)
