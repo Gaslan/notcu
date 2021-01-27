@@ -18,7 +18,11 @@ import MonacoEditor from 'monaco-editor-vue';
 import showdown from "showdown";
 import { mapState } from "vuex";
 
-const converter = new showdown.Converter()
+const converter = new showdown.Converter({
+  tables: true,
+  ghCodeBlocks: true,
+  tasklists: true
+})
 
 export default {
   name: 'ContentEditor',
