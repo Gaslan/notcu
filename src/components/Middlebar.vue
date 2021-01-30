@@ -1,14 +1,6 @@
 <template>
   <div class="middlebar">
-    <div class="middlebar-search">
-      <div class="search-panel">
-        <input type="text" name="search" id="" placeholder="Search...">
-        <i class="fas fa-search search-icon"></i>
-      </div>
-      <div class="new-note-panel">
-        <button><i class="fas fa-plus"></i></button>
-      </div>
-    </div>
+    <MiddlebarHeader />
     <div class="middlebar-title">
       <div class="title-panel">
         Title
@@ -25,11 +17,13 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import NoteList from "./NoteList";
+import MiddlebarHeader from "./MiddlebarHeader";
 
 export default {
   name: 'Middlebar',
   components: {
-    NoteList
+    NoteList,
+    MiddlebarHeader
   },
   data() {
     return {
@@ -71,57 +65,6 @@ export default {
   display: flex;
   flex-direction: column;
   border-right: 1px solid var(--border-light);
-}
-
-.middlebar-search{
-  display: flex;
-  height: 40px;
-  font-size: 14px;
-  padding: 8px;
-  border-bottom: 1px solid var(--border-light);
-  background: var(--background-primary);
-}
-
-.search-panel{
-  position: relative;
-  margin-right: 8px;
-  flex-grow: 1;
-}
-
-.search-panel input{
-  height: 24px;
-  border: 1px solid var(--border-light);
-  background: var(--background-secondary);
-  border-radius: 4px;
-  width: 100%;
-}
-
-.search-panel .search-icon{
-    position: absolute;
-    top: 5px;
-    right: 6px;
-}
-
-.new-note-panel{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.new-note-panel button{
-  height: 24px;
-  width: 24px;
-  border: 1px solid var(--border-light);
-  background: var(--background-secondary);
-  border-radius: 4px;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.new-note-panel i{
-  font-size: 12px;
 }
 
 .middlebar-title{
