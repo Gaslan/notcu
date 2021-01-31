@@ -11,7 +11,8 @@ const store = new Vuex.Store({
     displayedNoteSortType: {
       type: 'asc'
     },
-    isContentEditorPreviewMode: true
+    isContentEditorPreviewMode: true,
+    searchText: ''
   }),
   mutations: {
     setNotes (state, notes) {
@@ -28,6 +29,12 @@ const store = new Vuex.Store({
     },
     toggleContentEditorPreviewMode(state) {
       state.isContentEditorPreviewMode = !state.isContentEditorPreviewMode
+    },
+    setContentEditorPreviewMode(state, mode) {
+      state.isContentEditorPreviewMode = mode
+    },
+    setSearchText(state, text) {
+      state.searchText = text
     }
   },
   actions: {
@@ -49,6 +56,12 @@ const store = new Vuex.Store({
     },
     toggleContentEditorPreviewMode({commit}) {
       commit('toggleContentEditorPreviewMode')
+    },
+    setContentEditorPreviewMode({commit}, mode) {
+      commit('setContentEditorPreviewMode', mode)
+    },
+    setSearchText({commit}, text) {
+      commit('setSearchText', text)
     }
   }
 })

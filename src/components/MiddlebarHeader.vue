@@ -1,8 +1,9 @@
 <template>
   <div class="middlebar-header">
     <div class="search-panel">
-      <input type="text" name="search" id="" placeholder="Search...">
-      <i class="fas fa-search search-icon"></i>
+      <input type="text" name="search" id="" placeholder="Search..." v-model="searchText" @input="handleSearchInputChange">
+      <i v-if="!this.searchText" class="fas fa-search search-icon"></i>
+      <i v-if="this.searchText" class="fas fa-times-circle search-icon" @click="this.clearSearchText" title="clear"></i>
     </div>
     <div class="new-note-panel">
       <button @click="handleClickAddNote"><i class="fas fa-plus"></i></button>
@@ -17,8 +18,13 @@ export default {
   computed: {
     ...mapState(['notes']),
   },
+  data() {
+    return {
+      searchText: ''
+    }
+  },
   methods: {
-    ...mapActions(['selectNote']),
+    ...mapActions(['selectNote', 'setSearchText']),
     handleClickAddNote() {
       const maxId = this.notes.reduce((acc, cur) => cur.id > acc ? cur.id : acc, 0)
       const notesLength = this.notes.length
@@ -34,6 +40,13 @@ export default {
       }
       this.notes.push(newNote)
       this.selectNote(newNote)
+    },
+    handleSearchInputChange() {
+      this.setSearchText(this.searchText)
+    },
+    clearSearchText() {
+      this.searchText = ''
+      this.setSearchText('')
     }
   }
 }

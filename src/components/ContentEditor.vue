@@ -1,7 +1,7 @@
 <template>
   <div class="editor-wrapper">
     <MonacoEditor
-      v-show="!this.isContentEditorPreviewMode"
+      v-if="!this.isContentEditorPreviewMode"
       theme="vs"
       language="javascript"
       :value="this.content"
@@ -35,7 +35,7 @@ export default {
   computed: {
     ...mapState(['selectedNote', 'isContentEditorPreviewMode']),
     renderedContent() {
-      return converter.makeHtml(this.content)
+      return this.content ? converter.makeHtml(this.content) : ''
     }
   },
   methods: {

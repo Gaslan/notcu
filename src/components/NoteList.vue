@@ -1,9 +1,12 @@
 <template>
   <div class="middlebar-list">
-    <NoteListItem
-      v-for="note in this.sortedDisplayedNotes"
-      :note="note"
-      :key="note.title" />
+    <div v-if="this.isDisplayedNoteExist">
+      <NoteListItem
+        v-for="note in this.sortedDisplayedNotes"
+        :note="note"
+        :key="note.title" />
+    </div>
+    <div v-if="!this.isDisplayedNoteExist" class="middlebar-list-no-note">No notes found</div>
   </div>
 </template>
 
@@ -17,34 +20,42 @@ export default {
     NoteListItem
   },
   computed: {
-    ...mapState(['notes', 'selectedNote', 'displayedNoteType', 'displayedNoteSortType']),
+    ...mapState(['notes', 'selectedNote', 'displayedNoteType', 'displayedNoteSortType', 'searchText', 'isContentEditorPreviewMode']),
+    isDisplayedNoteExist() {
+      if (this.displayedNotes && this.displayedNotes.length) {
+        return true
+      }
+      this.selectNote(undefined)
+      this.setContentEditorPreviewMode(true)
+      return false
+    },
     displayedNotes() {
       const noteType = this.displayedNoteType
+      let displayedNotes = []
+
       if (!noteType || !noteType.type) {
-        return []
+        return displayedNotes
       }
 
       if (noteType.type == 'all') {
-        return this.notes.filter(x => !x.deleted)
-      }
-
-      if (noteType.type == 'favorite') {
-        return this.notes.filter(x => x.favorited && !x.deleted)
-      }
-
-      if (noteType.type == 'trash') {
-        return this.notes.filter(x => x.deleted)
-      }
-
-      if (noteType.type == 'tag') {
+        displayedNotes = this.notes.filter(x => !x.deleted)
+      } else if (noteType.type == 'favorite') {
+        displayedNotes = this.notes.filter(x => x.favorited && !x.deleted)
+      } else if (noteType.type == 'trash') {
+        displayedNotes = this.notes.filter(x => x.deleted)
+      } else if (noteType.type == 'tag') {
         if (noteType.payload == 'all') {
-          return this.notes.filter(x => x.tags && x.tags.length && !x.deleted)
+          displayedNotes = this.notes.filter(x => x.tags && x.tags.length && !x.deleted)
         } else {
-          return this.notes.filter(x => x.tags && x.tags.includes(noteType.payload) && !x.deleted)
+          displayedNotes = this.notes.filter(x => x.tags && x.tags.includes(noteType.payload) && !x.deleted)
         }
       }
 
-      return []
+      if (this.searchText) {
+        displayedNotes = displayedNotes.filter(x => x.title.indexOf(this.searchText) >= 0 || x.content.indexOf(this.searchText) >= 0)
+      }
+
+      return displayedNotes
     },
     sortedDisplayedNotes() {
       if (!this.displayedNotes || this.displayedNotes.length == 0) {
@@ -66,7 +77,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['selectNote']),
+    ...mapActions(['selectNote', 'setContentEditorPreviewMode']),
     sortNotes(notes) {
       notes.sort((a, b) => {
         if (a.pinned) {
@@ -108,5 +119,9 @@ export default {
 <style>
   .middlebar-list{
     flex-grow: 1;
+  }
+  .middlebar-list-no-note{
+    font-size: 14px;
+    padding: 8px;
   }
 </style>

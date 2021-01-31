@@ -1,10 +1,7 @@
 <template>
   <div class="content">
-    <ContentHeader />
-    <!-- <div v-if="this.selectedNote && this.selectedNote.title">
-      {{this.selectedNote}}
-    </div> -->
-    <ContentEditor :content="this.selectedNote.content" />
+    <ContentHeader :isContentExisted="this.isContentExisted" />
+    <ContentEditor :content="this.selectedNoteContent" />
   </div>
 </template>
 
@@ -20,7 +17,13 @@ export default {
     ContentEditor
   },
   computed: {
-    ...mapState(['selectedNote'])
+    ...mapState(['selectedNote']),
+    selectedNoteContent() {
+      return this.selectedNote ? this.selectedNote.content : undefined
+    },
+    isContentExisted() {
+      return !!this.selectedNote
+    }
   }
 }
 </script>
